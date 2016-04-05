@@ -1,0 +1,37 @@
+<div class="billboard" md-content>
+  <div class="album-cover"><img src="{{ data.imageURL }}" width="210" height="210" alt=""></div>
+  <div class="copy">
+    <h3>PLAYLIST</h3>
+    <h1>{{ data.name }}</h1>
+    <p>Created by: John Vacca - {{ data.total }} songs</p>
+    <a class="play-list" href=""><img src="images/icon_playTheList.png" width="105" height="29" alt=""></a>
+  </div>
+</div>
+
+<input ng-model="query" type="text" name="searchbox" size="20" value="" placeholder=" Search">
+
+<table id="playlist_table">
+  <tr>
+    <th></th>
+    <th></th>
+    <th><a ng-click="order('track.name')" href="">SONG</a></th>
+    <th><a ng-click="order('track.artists[0].name')" href="">ARTIST</a></th>
+    <th><a ng-click="order('track.album.name')" href="">ALBUM</a></th>
+    <th><a href=""><img src="images/icon_orderby_date.png" width="20" height="20" alt=""></a></th>
+    <th><a href=""><img src="images/icon_orderby_duration.png" width="20" height="20" alt=""></a></th>
+  </tr>
+
+  <tr ng-mouseover="hover($index)" ng-mouseout="hoverOut($index)" ng-repeat="song in data.items | orderBy:predicate:reverse | filter:query">
+    <td id="btn_play_r{{$index}}">
+      <a ng-click="play(song)" href=""><img src="images/icon_play_track.png" width="28" height="28" alt=""></a>
+    </td>
+    <td><a ng-click="addSong(song)" href=""><img src="images/icon_favorites_save.png" width="16" height="19" alt=""></a></td>
+    <td>{{ song.track.name }}</td>
+    <td>{{ song.track.artists[0].name }}</td>
+    <td>{{ song.track.album.name }}</td>
+    <td>{{ song.added_at }}</td>
+    <td>{{ song.track.duration_ms }}</td>
+  </tr>
+
+</table>
+

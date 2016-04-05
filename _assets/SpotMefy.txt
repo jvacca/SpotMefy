@@ -1,0 +1,6 @@
+SpotMefy
+
+Client ID
+243ce6bf4adb4f30a1b61408303e442c
+Client Secret
+8a19c31c93ef479cb8477a396ce21c50

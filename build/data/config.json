@@ -1,0 +1,16 @@
+{
+	"username" : "John Vacca",
+	"playlists" : [ {
+		"id" : "playlist1",
+		"name" : "Homesick Alien",
+		"imageURL" : ""
+	}, {
+		"id" : "playlist2",
+		"name" : "Bad Ass 60s",
+		"imageURL" : ""
+	}, {
+		"id" : "playlist3",
+		"name" : "God Save The Queen",
+		"imageURL" : ""
+	} ]
+}
