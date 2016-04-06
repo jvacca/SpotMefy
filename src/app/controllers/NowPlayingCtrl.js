@@ -4,7 +4,7 @@ angular.module('appControllers').controller('nowPlayingCtrl', ['$scope', 'queueS
 
 	$scope.currentSong = 'Song Title';
 	$scope.currentArtist = 'Artist Name';
-	$scope.currentAlbumImage = '';
+	$scope.currentAlbumImage = 'images/img_sample_album.png';
 
 	$scope.$on('handlePlayBroadcast', function(event, song) {
 		$scope.currentSong = song.track.name;

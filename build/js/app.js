@@ -1,7 +1,8 @@
 'use strict';
 
-var app = angular.module('spotmefy', ['ngRoute', 'appControllers', 'appServices']);
+var app = angular.module('spotmefy', ['ngRoute', 'appControllers', 'appServices', 'appDirectives']);
 var appControllers = angular.module('appControllers', []);
+var appDirectives = angular.module('appDirectives', []);
 var appServices = angular.module('appServices', ['ngResource']);
 
 app.config(['$routeProvider', function($routeProvider) {
@@ -33,7 +34,7 @@ app.config(['$routeProvider', function($routeProvider) {
 angular.module('appControllers').controller('browseCtrl', ['$scope', 'spotifyAPIService', function($scope, spotifyAPIService) {
 	
 	$scope.data = spotifyAPIService.get({jsonName: 'categories'}, function(song) {
-		console.log($scope.data)
+		//
     });
 
 }]);
@@ -41,12 +42,19 @@ angular.module('appControllers').controller('browseCtrl', ['$scope', 'spotifyAPI
 
 angular.module('appControllers').controller('mediaControlsCtrl', ['$scope', 'queueService', function($scope, queueService) {
 
-	$scope.currentSong = '';
+	$scope.currentSong = 'whateva';
+	var audioSourcet = $("#srcFile");
+	var audioPlayer = document.getElementById("audioElement");
 
 	$scope.$on('handlePlayBroadcast', function(event, song) {
-		$scope.currentSong = song.preview_url;
-		
+		console.dir(song.track.preview_url);
+		$scope.currentSong = song.track.preview_url;
+		audioSourcet.attr("src", $scope.currentSong);
+		audioPlayer.load();
+		audioPlayer.play();
 	});
+
+	
 }]);
 'use strict';
 
@@ -54,7 +62,7 @@ angular.module('appControllers').controller('nowPlayingCtrl', ['$scope', 'queueS
 
 	$scope.currentSong = 'Song Title';
 	$scope.currentArtist = 'Artist Name';
-	$scope.currentAlbumImage = '';
+	$scope.currentAlbumImage = 'images/img_sample_album.png';
 
 	$scope.$on('handlePlayBroadcast', function(event, song) {
 		$scope.currentSong = song.track.name;
@@ -67,7 +75,7 @@ angular.module('appControllers').controller('nowPlayingCtrl', ['$scope', 'queueS
 angular.module('appControllers').controller('playlistSongsCtrl', ['$scope', '$routeParams', 'spotifyAPIService', 'queueService', function($scope, $routeParams, spotifyAPIService, queueService) {
 
 	$scope.data = spotifyAPIService.get({jsonName: $routeParams.playlistId}, function(song) {
-		//
+		// 
     });
 
 	$scope.order = function(predicate) {
@@ -123,6 +131,13 @@ angular.module('appControllers').controller('songsCtrl', ['$scope', 'queueServic
 	
 	$scope.data = queueService.getQueueList();
 
+	$scope.order = function(predicate) {
+		$scope.predicate = predicate;
+	};
+
+	$scope.predicate = 'id';
+	$scope.reverse = false;
+
 	$scope.removeSongFromQueue = function(index) {
 		queueService.removeFromQueue(index);
 	};
@@ -148,6 +163,40 @@ angular.module('appControllers').controller('topnavCtrl', ['$scope', 'queueServi
 	$scope.data.username = 'John Vacca';
 
 }]);
+'use strict';
+
+angular.module('appControllers').directive('playlistSongsCtrl', ['$scope', '$routeParams', 'spotifyAPIService', 'queueService', function($scope, $routeParams, spotifyAPIService, queueService) {
+
+	$scope.data = spotifyAPIService.get({jsonName: $routeParams.playlistId}, function(song) {
+		// 
+    });
+
+	$scope.order = function(predicate) {
+		$scope.predicate = predicate;
+	};
+
+	$scope.predicate = 'id';
+	$scope.reverse = false;
+
+	$scope.addSong = function(song) {		
+		queueService.addToQueue(song);
+	};
+
+	$scope.play = function(song) {
+		queueService.broadcast(song);
+	};
+
+	$scope.hover = function(index) {
+		$("#btn_play_r" + index).css("opacity", 1);
+	};
+
+	$scope.hoverOut = function(index) {
+		$("#btn_play_r" + index).css("opacity", 0);
+	};
+
+}]);
+
+
 'use strict';
 
 angular.module('appServices').service('queueService', ['$rootScope', function($rootScope) {

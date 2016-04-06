@@ -4,6 +4,13 @@ angular.module('appControllers').controller('songsCtrl', ['$scope', 'queueServic
 	
 	$scope.data = queueService.getQueueList();
 
+	$scope.order = function(predicate) {
+		$scope.predicate = predicate;
+	};
+
+	$scope.predicate = 'id';
+	$scope.reverse = false;
+
 	$scope.removeSongFromQueue = function(index) {
 		queueService.removeFromQueue(index);
 	};

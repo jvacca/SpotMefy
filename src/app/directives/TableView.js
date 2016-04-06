@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('appControllers').controller('playlistSongsCtrl', ['$scope', '$routeParams', 'spotifyAPIService', 'queueService', function($scope, $routeParams, spotifyAPIService, queueService) {
+angular.module('appControllers').directive('playlistSongsCtrl', ['$scope', '$routeParams', 'spotifyAPIService', 'queueService', function($scope, $routeParams, spotifyAPIService, queueService) {
 
 	$scope.data = spotifyAPIService.get({jsonName: $routeParams.playlistId}, function(song) {
 		// 
@@ -30,3 +30,4 @@ angular.module('appControllers').controller('playlistSongsCtrl', ['$scope', '$ro
 	};
 
 }]);
+

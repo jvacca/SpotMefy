@@ -12,11 +12,6 @@
         <!--styles-->
         
         <script src="js/lib/modernizr-2.8.3.min.js"></script>
-        <script src="js/lib/jquery.min.js"></script>
-        <script src="js/lib/angular.min.js"></script>
-        <script src="js/lib/angular-route.min.js"></script>
-        <script src="js/lib/angular-resource.min.js"></script>
-        <!--scripts-->
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -123,13 +118,18 @@
 
               <div class="volume-slider"></div>
 
-              <video id="audioEl" width="1" height="1" controls="" autoplay="" name="media">
-                <source src="" type="audio/mpeg">
+              <video id="audioElement" controls="" autoplay="" name="media" width="1" height="1">
+                <source id="srcFile" src="" type="audio/mp3"/>
               </video>
             </div>
           </div>
 
         </div>
         
+        <script src="js/lib/jquery.min.js"></script>
+        <script src="js/lib/angular.min.js"></script>
+        <script src="js/lib/angular-route.min.js"></script>
+        <script src="js/lib/angular-resource.min.js"></script>
+        <!--scripts-->
     </body>
 </html>

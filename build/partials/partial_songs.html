@@ -6,6 +6,8 @@
   </div>
 </div>
 
+<input ng-model="query" type="text" name="searchbox" size="20" value="" placeholder=" Search">
+
 <table>
   <tr>
     <th></th>
@@ -14,14 +16,14 @@
     <th><a ng-click="order('artists')" href="">ARTIST</a></th>
     <th><a ng-click="order('album')" href="">ALBUM</a></th>
     <th><a href=""><img src="images/icon_orderby_date.png" width="20" height="20" alt=""></a></th>
-    <th><a href=""><img src="images/icon_orderby_duration.png" width="20" height="20" alt=""></a></th>
+    <th><a href=""><img src="images/icon_orderby_duration.png" width="16" height="19" alt=""></a></th>
   </tr>
 
-  <tr ng-mouseover="hover($index)" ng-mouseout="hoverOut($index)" ng-repeat="song in data">
+  <tr ng-mouseover="hover($index)" ng-mouseout="hoverOut($index)" ng-repeat="song in data | orderBy:predicate:reverse | filter:query">
     <td id="btn_play_r{{$index}}">
       <a ng-click="play(song)" href=""><img src="images/icon_play_track.png" width="28" height="28" alt=""></a>
     </td>
-    <td><img src="images/icon_favorites_saved.png" width="16" height="19" alt=""></td>
+    <td><img src="images/icon_favorites_saved.png" width="12" height="13" alt=""></td>
     <td>{{ song.track.name }}</td>
     <td>{{ song.track.artists[0].name }}</td>
     <td>{{ song.track.album.name }}</td>

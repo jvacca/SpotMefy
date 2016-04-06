@@ -1,7 +1,8 @@
 'use strict';
 
-var app = angular.module('spotmefy', ['ngRoute', 'appControllers', 'appServices']);
+var app = angular.module('spotmefy', ['ngRoute', 'appControllers', 'appServices', 'appDirectives']);
 var appControllers = angular.module('appControllers', []);
+var appDirectives = angular.module('appDirectives', []);
 var appServices = angular.module('appServices', ['ngResource']);
 
 app.config(['$routeProvider', function($routeProvider) {
