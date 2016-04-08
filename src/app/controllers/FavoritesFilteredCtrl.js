@@ -1,6 +1,9 @@
 'use strict';
 
-angular.module('appControllers').controller('favoritesFilteredCtrl', ['$scope', '$location', '$routeParams', 'favoritesService', function($scope, $location, $routeParams, favoritesService) {
+angular.module('appControllers').controller('favoritesFilteredCtrl', ['$scope', '$location', '$routeParams', 'favoritesService', 'spotifyAPIService', function($scope, $location, $routeParams, favoritesService, spotifyAPIService) {
+	$scope.type = "favorites";
+	var data, id, arr; 
+
 	$scope.filterId = $routeParams.filterId;
 	$scope.which = ($scope.filterId == 'artists');
 

@@ -108,15 +108,17 @@ input {
 /* side nav */
 
 .sidepanel {
+	background: $gray;
 	float: left;
 	width: 20%;
+	min-height: 600px;
 	min-width: 204px;
 	max-width: 280px;
 }
 
 .sidenav-container {
-	background: $gray;
-	height: 477px;
+	
+	
 	font-size: 12px;
 	overflow: auto;
 }

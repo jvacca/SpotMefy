@@ -7,6 +7,8 @@ angular.module('appDirectives').directive('tableViewControl', function() {
 		scope: {},
 		templateUrl: 'templates/TableViewTemplate.html',
 		controller: ['$scope', 'favoritesService', function($scope, favoritesService) {
+			$scope.type = $scope.$parent.type;
+
 			$scope.order = function(predicate) {
 				$scope.predicate = predicate;
 			};
@@ -28,6 +30,7 @@ angular.module('appDirectives').directive('tableViewControl', function() {
 				favoritesService.broadcast(event, song);
 			};
 
+			/*
 			$scope.hover = function(index) {
 				$("#btn_play_r" + index).css("opacity", 1);
 				$("#btn_add_r" + index).css("opacity", 1);
@@ -37,6 +40,7 @@ angular.module('appDirectives').directive('tableViewControl', function() {
 				$("#btn_play_r" + index).css("opacity", 0);
 				$("#btn_add_r" + index).css("opacity", 0);
 			};
+			*/
 		}]
 	};
 

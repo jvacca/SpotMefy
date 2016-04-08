@@ -16,7 +16,9 @@
       <a ng-click="play(song)" href=""><img src="images/icon_play_track.png" width="28" height="28" alt=""></a>
     </td>
     <td id="btn_add_r{{$index}}">
-      <a ng-click="addToFavorites(song)" href=""><img src="images/icon_favorites_save.png" width="15" height="14" alt=""></a>
+      <a ng-show="(type !=='favorites')" ng-click="addToFavorites(song)" href=""><img src="images/icon_favorites_save.png" width="15" height="14" alt=""></a>
+
+      <a ng-show="(type =='favorites')" ng-click="removeFromFavorites($index)" href=""><img src="images/icon_favorites_remove.png" width="10" height="9" alt=""></a>
     </td>
     <td>{{ song.track.name }}</td>
     <td>{{ song.track.artists[0].name }}</td>

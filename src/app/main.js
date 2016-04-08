@@ -35,4 +35,14 @@ app.config(['$routeProvider', function($routeProvider) {
 		redirectTo: '/main'
 	});
 
+	var maxHeight = $(window).height();
+	var containerHeight = $(".container").height();
+
+	$(".content-panel").css("height", maxHeight - 91);
+
+	$(".sidepanel").css("height", maxHeight - 92); 
+
 }]);
+
+
+

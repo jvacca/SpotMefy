@@ -11,7 +11,9 @@ angular.module('appServices').service('favoritesService', ['$rootScope', functio
 	};
 
 	this.removeFromFavorites = function(index) {
-		favoritesArray.slice(index, 1);
+		favoritesArray.splice(index, 1);
+
+        localStorage.favorites = JSON.stringify(favoritesArray);
 	};
 
 	this.getFavorites = function() {
@@ -35,7 +37,7 @@ angular.module('appServices').service('favoritesService', ['$rootScope', functio
     this.getArtists = function() {
         
         var allArtists = _.map(favoritesArray, function(song) {
-            return {name:song.track.artists[0].name, id:song.track.artists[0].id};
+            return {name:song.track.artists[0].name, image:song.track.album.images[0].url, id:song.track.artists[0].id};
         });
     
         return _.uniqBy(allArtists, 'name');

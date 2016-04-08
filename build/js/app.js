@@ -35,7 +35,17 @@ app.config(['$routeProvider', function($routeProvider) {
 		redirectTo: '/main'
 	});
 
+	var maxHeight = $(window).height();
+	var containerHeight = $(".container").height();
+
+	$(".content-panel").css("height", maxHeight - 91);
+
+	$(".sidepanel").css("height", maxHeight - 92); 
+
 }]);
+
+
+
 
 'use strict';
 
@@ -74,7 +84,7 @@ angular.module('appDirectives').directive('nowPlayingControl', function() {
 			$scope.$on('handlePlayBroadcast', function(event, song) {
 				$scope.currentSong = song.track.name;
 				$scope.currentArtist = song.track.artists[0].name;
-				$scope.currentAlbumImage = song.track.album.images[2].url;
+				$scope.currentAlbumImage = song.track.album.images[0].url;
 			});
 		}]
 	};
@@ -114,6 +124,8 @@ angular.module('appDirectives').directive('tableViewControl', function() {
 		scope: {},
 		templateUrl: 'templates/TableViewTemplate.html',
 		controller: ['$scope', 'favoritesService', function($scope, favoritesService) {
+			$scope.type = $scope.$parent.type;
+
 			$scope.order = function(predicate) {
 				$scope.predicate = predicate;
 			};
@@ -135,6 +147,7 @@ angular.module('appDirectives').directive('tableViewControl', function() {
 				favoritesService.broadcast(event, song);
 			};
 
+			/*
 			$scope.hover = function(index) {
 				$("#btn_play_r" + index).css("opacity", 1);
 				$("#btn_add_r" + index).css("opacity", 1);
@@ -144,6 +157,7 @@ angular.module('appDirectives').directive('tableViewControl', function() {
 				$("#btn_play_r" + index).css("opacity", 0);
 				$("#btn_add_r" + index).css("opacity", 0);
 			};
+			*/
 		}]
 	};
 
@@ -183,21 +197,32 @@ angular.module('appControllers').controller('browseCtrl', ['$scope', '$location'
 }]);
 'use strict';
 
-angular.module('appControllers').controller('favoritesByAlbumArtistCtrl', ['$scope', '$routeParams', 'favoritesService', function($scope, $routeParams, favoritesService) {
+angular.module('appControllers').controller('favoritesByAlbumArtistCtrl', ['$scope', '$routeParams', 'favoritesService', 'spotifyAPIService', function($scope, $routeParams, favoritesService, spotifyAPIService) {
+	$scope.type = "favorites";
+	var id, data; 
 
 	if ($routeParams.which == 'album') {
 		$scope.rows = favoritesService.getTracksByAlbumId($routeParams.id);
 		$scope.name = $scope.rows[0].track.album.name;
+		$scope.imageUrl = $scope.rows[0].track.album.images[1].url;
 	} else {
 		$scope.rows = favoritesService.getTracksByArtistId($routeParams.id);
 		$scope.name = $scope.rows[0].track.artists[0].name;
+
+		id = $scope.rows[0].track.artists[0].id;
+		data = spotifyAPIService.get({id:id}, function(resp) {
+			$scope.imageUrl = resp.images[0].url;
+	    });
 	}
 
 }]);
 
 'use strict';
 
-angular.module('appControllers').controller('favoritesFilteredCtrl', ['$scope', '$location', '$routeParams', 'favoritesService', function($scope, $location, $routeParams, favoritesService) {
+angular.module('appControllers').controller('favoritesFilteredCtrl', ['$scope', '$location', '$routeParams', 'favoritesService', 'spotifyAPIService', function($scope, $location, $routeParams, favoritesService, spotifyAPIService) {
+	$scope.type = "favorites";
+	var data, id, arr; 
+
 	$scope.filterId = $routeParams.filterId;
 	$scope.which = ($scope.filterId == 'artists');
 
@@ -229,6 +254,7 @@ angular.module('appControllers').controller('mainCtrl', ['$scope', 'resourceServ
 'use strict';
 
 angular.module('appControllers').controller('playlistSongsCtrl', ['$scope', '$routeParams', 'resourceService', function($scope, $routeParams, resourceService) {
+	$scope.type = "playlist";
 
 	$scope.data = resourceService.get({jsonName: $routeParams.playlistId}, function(song) {
 		$scope.rows = $scope.data.items;
@@ -238,7 +264,7 @@ angular.module('appControllers').controller('playlistSongsCtrl', ['$scope', '$ro
 'use strict';
 
 angular.module('appControllers').controller('songsCtrl', ['$scope', 'favoritesService', function($scope, favoritesService) {
-	
+	$scope.type = "favorites";
 	$scope.rows = favoritesService.getFavorites();
 
 }]);
@@ -255,7 +281,9 @@ angular.module('appServices').service('favoritesService', ['$rootScope', functio
 	};
 
 	this.removeFromFavorites = function(index) {
-		favoritesArray.slice(index, 1);
+		favoritesArray.splice(index, 1);
+
+        localStorage.favorites = JSON.stringify(favoritesArray);
 	};
 
 	this.getFavorites = function() {
@@ -279,7 +307,7 @@ angular.module('appServices').service('favoritesService', ['$rootScope', functio
     this.getArtists = function() {
         
         var allArtists = _.map(favoritesArray, function(song) {
-            return {name:song.track.artists[0].name, id:song.track.artists[0].id};
+            return {name:song.track.artists[0].name, image:song.track.album.images[0].url, id:song.track.artists[0].id};
         });
     
         return _.uniqBy(allArtists, 'name');
@@ -331,5 +359,12 @@ angular.module('appServices').factory('resourceService', ['$resource', function(
 	return $resource('data/:jsonName.json', {}, {
 		query: {method:'GET', params:{jsonName:'config'}, isArray:false}
 	});
+
+}]);
+'use strict';
+
+angular.module('appServices').factory('spotifyAPIService', ['$resource', function($resource) {
+
+	return $resource('https://api.spotify.com/v1/artists/:id');
 
 }]);
