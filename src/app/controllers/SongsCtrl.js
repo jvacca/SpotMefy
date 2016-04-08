@@ -1,30 +1,7 @@
 'use strict';
 
-angular.module('appControllers').controller('songsCtrl', ['$scope', 'queueService', function($scope, queueService) {
+angular.module('appControllers').controller('songsCtrl', ['$scope', 'favoritesService', function($scope, favoritesService) {
 	
-	$scope.data = queueService.getQueueList();
-
-	$scope.order = function(predicate) {
-		$scope.predicate = predicate;
-	};
-
-	$scope.predicate = 'id';
-	$scope.reverse = false;
-
-	$scope.removeSongFromQueue = function(index) {
-		queueService.removeFromQueue(index);
-	};
-
-	$scope.play = function(song) {
-		queueService.broadcast(song);
-	};
-
-	$scope.hover = function(index) {
-		$("#btn_play_r" + index).css("opacity", 1);
-	};
-
-	$scope.hoverOut = function(index) {
-		$("#btn_play_r" + index).css("opacity", 0);
-	};
+	$scope.rows = favoritesService.getFavorites();
 
 }]);

@@ -6,19 +6,16 @@ angular.module('appServices').service('queueService', ['$rootScope', function($r
 	var currentSongURL = '';
 
 
-	this.addToQueue = function(song) {
-		queueArray.push(song);
+	this.addToQueue = function(arr) {
+		queueArray = arr;
 	};
 
-	this.removeFromQueue = function(index) {
-		queueArray.slice(index, 1);
+	this.clearQueue = function() {
+		queueArray = null;
 	};
 
 	this.getQueueList = function() {
 		return queueArray;
 	};
 
-	this.broadcast = function(msg) {
-        $rootScope.$broadcast('handlePlayBroadcast', msg); 
-    };
 }]);

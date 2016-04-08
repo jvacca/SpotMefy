@@ -23,6 +23,14 @@ app.config(['$routeProvider', function($routeProvider) {
 		templateUrl: 'partials/partial_playlist_songs.html',
 		controller: 'playlistSongsCtrl'
 	}).
+	when('/favorites_filtered/:filterId', {
+		templateUrl: 'partials/partial_songs_filtered.html',
+		controller: 'favoritesFilteredCtrl'
+	}).
+	when('/view_tracksby/:which/:id', {
+		templateUrl: 'partials/partial_favorites_by_AlbumArtist.html',
+		controller: 'favoritesByAlbumArtistCtrl'
+	}).
 	otherwise({
 		redirectTo: '/main'
 	});

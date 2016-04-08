@@ -1,0 +1,36 @@
+<nav class="sidenav-container">
+  <h3>MAIN</h3>
+  <a id="btn_browse" ng-click="navigate('/browse', 'btn_browse')" class="sidenav" href="">
+    <div class="selected"></div>
+    <div class="icon"><img src="images/icon_sidenav_browse.png" width="18" height="18" alt=""></div>
+    <p class="label">Browse</p>
+  </a>
+
+  <h3>YOUR MUSIC</h3>
+  <a id="btn_songs" ng-click="navigate('/songs', 'btn_songs')" class="sidenav" href="">
+    <div class="selected"></div>
+    <div class="icon"><img src="images/icon_sidenav_songs.png" width="18" height="16" alt=""></div>
+    <p class="label">Songs</p>
+  </a>
+  <a id="btn_albums" ng-click="navigate('/favorites_filtered/albums', 'btn_albums')" class="sidenav" href="">
+    <div class="selected"></div>
+    <div class="icon"><img src="images/icon_sidenav_albums.png" width="18" height="15" alt=""></div>
+    <p class="label">Albums</p>
+  </a>
+  <a id="btn_artists" ng-click="navigate('/favorites_filtered/artists', 'btn_artists')" class="sidenav" href="">
+    <div class="selected"></div>
+    <div class="icon"><img src="images/icon_sidenav_artists.png" width="18" height="15" alt=""></div>
+    <p class="label">Artists</p>
+  </a>
+
+  <h3>PLAYLISTS</h3>
+  <a id="btn_playlist{{$index}}" ng-click="navigate('/playlist_songs/' + playlist.id, 'btn_playlist' + $index)" ng-repeat="playlist in data.playlists" class="sidenav" href="">
+    <div class="selected"></div>
+    <div class="icon"><img src="images/icon_sidenav_playlists.png" width="18" height="18" alt=""></div>
+    <p class="label">{{ playlist.name }}</p>
+  </a>
+
+  <div class="new-playlist">
+    <a id="btn_addPlaylist" href=""><div><img src="images/icon_sidenav_add_new_playlist.png" width="28" height="28" alt=""></div>New Playlist</a>
+  </div>
+</nav>

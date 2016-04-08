@@ -346,6 +346,7 @@ td:nth-child(1) {
 
 td:nth-child(2) {
   width: 5%;
+  opacity: 0;
 }
 
 td:nth-child(3) {
@@ -371,14 +372,17 @@ td:nth-child(7) {
 }
 
 .categoryBoxes {
+  display: block;
   float: left;
   background: #333;
   width: 140px;
   height: 200px;
   margin: 10px;
+  text-decoration: none;
 }
 
 .categoryBoxes p {
-  padding: 20px;
+  margin: 0;
+  padding: 10px;
   text-align: center;
 }

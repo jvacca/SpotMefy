@@ -1,7 +1,8 @@
 <div>
+  <img src="images/img_sample_billboard.png" width="800" height=""286>
   <h3>GENRES AND MOODS</h3>
-  <div class="categoryBoxes" ng-repeat="item in data.categories.items">
+  <a class="categoryBoxes" ng-repeat="item in data.categories.items" href="">
     <img src="{{ item.icons[0].url }}" width="140" height="140" alt="">
     <p>{{ item.name }}</p>
-  </div>
+  </a>
 </div>

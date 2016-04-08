@@ -1,0 +1,13 @@
+<div>
+  
+  <h3>SORTED BY: {{filterId}}</h3>
+  <a class="categoryBoxes" ng-click="getArtist(item.id)" ng-show="which" ng-repeat="item in artists" href="">
+    <img src="" width="140" height="140" alt="">
+    <p>{{ item.name }}</p>
+  </a>
+
+  <a class="categoryBoxes" ng-click="getAlbum(item.id)" ng-show="!which" ng-repeat="item in albums" href="">
+    <img src="{{ item.image }}" width="140" height="140" alt="">
+    <p>{{ item.name }}</p>
+  </a>
+</div>
