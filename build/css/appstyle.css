@@ -1,8 +1,4 @@
 /* global styles */
-html {
-  scrollbar-track-color: #282828;
-}
-
 body {
   background: #000;
   font-family: Arial, Helvetica, Sans-serif;
@@ -275,6 +271,7 @@ input {
   min-width: 816px;
   height: 580px;
   overflow: auto;
+  -webkit-transform: translate3d(0, 0, 0);
 }
 
 .content {

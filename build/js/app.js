@@ -49,6 +49,96 @@ app.config(['$routeProvider', function($routeProvider) {
 
 'use strict';
 
+angular.module('appControllers').controller('browseCtrl', ['$scope', '$location', 'resourceService', function($scope, $location, resourceService) {
+	
+	$scope.data = resourceService.get({jsonName: 'categories'}, function(song) {
+		// 
+    });
+
+    $scope.getArtist = function(id) {
+    	$location.path('/view_artist/id');
+    };
+
+    $scope.getAlbum = function(id) {
+    	$location.path('/view_album/id');
+    };
+
+}]);
+'use strict';
+
+angular.module('appControllers').controller('favoritesByAlbumArtistCtrl', ['$scope', '$routeParams', 'favoritesService', 'spotifyAPIService', function($scope, $routeParams, favoritesService, spotifyAPIService) {
+	$scope.type = "favorites";
+	var id, data; 
+
+	if ($routeParams.which == 'album') {
+		$scope.rows = favoritesService.getTracksByAlbumId($routeParams.id);
+		$scope.name = $scope.rows[0].track.album.name;
+		$scope.imageUrl = $scope.rows[0].track.album.images[1].url;
+	} else {
+		$scope.rows = favoritesService.getTracksByArtistId($routeParams.id);
+		$scope.name = $scope.rows[0].track.artists[0].name;
+
+		id = $scope.rows[0].track.artists[0].id;
+		data = spotifyAPIService.get({id:id}, function(resp) {
+			$scope.imageUrl = resp.images[0].url;
+	    });
+	}
+
+}]);
+
+'use strict';
+
+angular.module('appControllers').controller('favoritesFilteredCtrl', ['$scope', '$location', '$routeParams', 'favoritesService', 'spotifyAPIService', function($scope, $location, $routeParams, favoritesService, spotifyAPIService) {
+	$scope.type = "favorites";
+	var data, id, arr; 
+
+	$scope.filterId = $routeParams.filterId;
+	$scope.which = ($scope.filterId == 'artists');
+
+	if ($scope.which === true) {
+		$scope.artists = favoritesService.getArtists();
+	} else {
+		$scope.albums = favoritesService.getAlbums();
+	}
+
+	$scope.getArtist = function(id) {
+		$location.path('/view_tracksby/artist/' + id);
+	};
+
+	$scope.getAlbum = function(id) {
+		$location.path('/view_tracksby/album/' + id);
+	};
+	
+}]);
+'use strict';
+
+angular.module('appControllers').controller('mainCtrl', ['$scope', 'resourceService', 'favoritesService', function($scope, resourceService, favoritesService) {
+	
+	$scope.configData = resourceService.get({jsonName: 'config'}, function(data) {
+		$scope.username = $scope.configData.username; 
+		favoritesService.broadcast('applicationConfigLoaded', $scope.configData);
+    });
+
+}]);
+'use strict';
+
+angular.module('appControllers').controller('playlistSongsCtrl', ['$scope', '$routeParams', 'resourceService', function($scope, $routeParams, resourceService) {
+	$scope.type = "playlist";
+
+	$scope.data = resourceService.get({jsonName: $routeParams.playlistId}, function(song) {
+		$scope.rows = $scope.data.items;
+    });
+
+}]);
+'use strict';
+
+angular.module('appControllers').controller('songsCtrl', ['$scope', 'favoritesService', function($scope, favoritesService) {
+	$scope.type = "favorites";
+	$scope.rows = favoritesService.getFavorites();
+
+}]);
+'use strict';
+
 angular.module('appDirectives').directive('mediaControlsControl', function() {
 	return {
 		restrict: 'A',
@@ -180,110 +270,21 @@ angular.module('appDirectives').directive('userProfileControl', function() {
 });
 'use strict';
 
-angular.module('appControllers').controller('browseCtrl', ['$scope', '$location', 'resourceService', function($scope, $location, resourceService) {
-	
-	$scope.data = resourceService.get({jsonName: 'categories'}, function(song) {
-		// 
-    });
-
-    $scope.getArtist = function(id) {
-    	$location.path('/view_artist/id');
-    };
-
-    $scope.getAlbum = function(id) {
-    	$location.path('/view_album/id');
-    };
-
-}]);
-'use strict';
-
-angular.module('appControllers').controller('favoritesByAlbumArtistCtrl', ['$scope', '$routeParams', 'favoritesService', 'spotifyAPIService', function($scope, $routeParams, favoritesService, spotifyAPIService) {
-	$scope.type = "favorites";
-	var id, data; 
-
-	if ($routeParams.which == 'album') {
-		$scope.rows = favoritesService.getTracksByAlbumId($routeParams.id);
-		$scope.name = $scope.rows[0].track.album.name;
-		$scope.imageUrl = $scope.rows[0].track.album.images[1].url;
-	} else {
-		$scope.rows = favoritesService.getTracksByArtistId($routeParams.id);
-		$scope.name = $scope.rows[0].track.artists[0].name;
-
-		id = $scope.rows[0].track.artists[0].id;
-		data = spotifyAPIService.get({id:id}, function(resp) {
-			$scope.imageUrl = resp.images[0].url;
-	    });
-	}
-
-}]);
-
-'use strict';
-
-angular.module('appControllers').controller('favoritesFilteredCtrl', ['$scope', '$location', '$routeParams', 'favoritesService', 'spotifyAPIService', function($scope, $location, $routeParams, favoritesService, spotifyAPIService) {
-	$scope.type = "favorites";
-	var data, id, arr; 
-
-	$scope.filterId = $routeParams.filterId;
-	$scope.which = ($scope.filterId == 'artists');
-
-	if ($scope.which === true) {
-		$scope.artists = favoritesService.getArtists();
-	} else {
-		$scope.albums = favoritesService.getAlbums();
-	}
-
-	$scope.getArtist = function(id) {
-		$location.path('/view_tracksby/artist/' + id);
-	};
-
-	$scope.getAlbum = function(id) {
-		$location.path('/view_tracksby/album/' + id);
-	};
-	
-}]);
-'use strict';
-
-angular.module('appControllers').controller('mainCtrl', ['$scope', 'resourceService', 'favoritesService', function($scope, resourceService, favoritesService) {
-	
-	$scope.configData = resourceService.get({jsonName: 'config'}, function(data) {
-		$scope.username = $scope.configData.username; 
-		favoritesService.broadcast('applicationConfigLoaded', $scope.configData);
-    });
-
-}]);
-'use strict';
-
-angular.module('appControllers').controller('playlistSongsCtrl', ['$scope', '$routeParams', 'resourceService', function($scope, $routeParams, resourceService) {
-	$scope.type = "playlist";
-
-	$scope.data = resourceService.get({jsonName: $routeParams.playlistId}, function(song) {
-		$scope.rows = $scope.data.items;
-    });
-
-}]);
-'use strict';
-
-angular.module('appControllers').controller('songsCtrl', ['$scope', 'favoritesService', function($scope, favoritesService) {
-	$scope.type = "favorites";
-	$scope.rows = favoritesService.getFavorites();
-
-}]);
-'use strict';
-
 angular.module('appServices').service('favoritesService', ['$rootScope', function($rootScope) {
 
-	var favoritesArray = JSON.parse(localStorage.favorites) || [];
+	//var favoritesArray = JSON.parse(localStorage.favorites) || [];
+    var favoritesArray = [];
 
 	this.addToFavorites = function(song) {
 		favoritesArray.push(song);
 
-        localStorage.favorites = JSON.stringify(favoritesArray);
+        //localStorage.favorites = JSON.stringify(favoritesArray);
 	};
 
 	this.removeFromFavorites = function(index) {
 		favoritesArray.splice(index, 1);
 
-        localStorage.favorites = JSON.stringify(favoritesArray);
+        //localStorage.favorites = JSON.stringify(favoritesArray);
 	};
 
 	this.getFavorites = function() {

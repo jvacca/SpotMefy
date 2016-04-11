@@ -2,18 +2,19 @@
 
 angular.module('appServices').service('favoritesService', ['$rootScope', function($rootScope) {
 
-	var favoritesArray = JSON.parse(localStorage.favorites) || [];
+	//var favoritesArray = JSON.parse(localStorage.favorites) || [];
+    var favoritesArray = [];
 
 	this.addToFavorites = function(song) {
 		favoritesArray.push(song);
 
-        localStorage.favorites = JSON.stringify(favoritesArray);
+        //localStorage.favorites = JSON.stringify(favoritesArray);
 	};
 
 	this.removeFromFavorites = function(index) {
 		favoritesArray.splice(index, 1);
 
-        localStorage.favorites = JSON.stringify(favoritesArray);
+        //localStorage.favorites = JSON.stringify(favoritesArray);
 	};
 
 	this.getFavorites = function() {
